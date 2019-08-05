@@ -11,36 +11,31 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
-protected void configure(HttpSecurity http) throws Exception {
-    http
-        .authorizeRequests()
-            .antMatchers("/").permitAll()
-            .antMatchers("/avengers/assemble").hasRole("CHAMPION")
-            .antMatchers("/secret-bases").hasRole("DIRECTOR")
-            .anyRequest().authenticated()
-            .and()
-        .formLogin()
-            .and()
-        .httpBasic();
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .authorizeRequests()
+                .antMatchers("/").permitAll()
+                .antMatchers("/avengers/assemble").hasRole("CHAMPION")
+                .antMatchers("/secret-bases").hasRole("DIRECTOR")
+                .anyRequest().authenticated()
+                .and()
+            .formLogin()
+                .and()
+            .httpBasic();
+    }
 
-        
-    
-}
-@Override
-protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-auth.inMemoryAuthentication().withUser("user").password(encoder.encode("password")).roles("");
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
-    auth.inMemoryAuthentication()
-    .withUser("Steve")
-        .password(encoder.encode("motdepasse"))
-        .roles("CHAMPION")
-        .and()
-    .withUser("Nick")
-        .password(encoder.encode("flerken"))
-        .roles("DIRECTOR");
-        
-    
-}
+        auth.inMemoryAuthentication()
+        .withUser("Steve")
+            .password(encoder.encode("motdepasse"))
+            .roles("CHAMPION")
+            .and()
+        .withUser("Nick")
+            .password(encoder.encode("flerken"))
+            .roles("DIRECTOR");
+    }
 
 }
